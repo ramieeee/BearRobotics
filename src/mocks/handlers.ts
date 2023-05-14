@@ -1,6 +1,7 @@
 import { DefaultBodyType, rest } from "msw";
 
 import { Location } from "./db";
+import { locations } from "./db";
 
 interface LocationsResult {
   total_count: number;
@@ -20,8 +21,8 @@ export const handlers = [
     (req, res, ctx) => {
       // Please implement filtering feature here
       const result: LocationsResult = {
-        total_count: 0,
-        locations: [],
+        total_count: locations?.length,
+        locations: locations,
       };
 
       return res(ctx.status(200), ctx.json(result));
