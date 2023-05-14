@@ -7,39 +7,45 @@ interface ITableProps {
 }
 
 export default function Table({ locations }: ITableProps) {
-  // id: 0,
-  // name: "Spicy restaurant",
-  // robot: {
-  //   id: "abcde123",
-  //   is_online: true,
-  // },
-
   const columns = [
-    { field: "star", headerName: "ID", width: 90 },
+    { field: "star", headerName: "star", width: 60, sortable: false },
     {
       field: "name",
       headerName: "Locations",
-      width: 150,
+      width: 50,
+      flex: 1,
       editable: false,
+      sortable: false,
     },
     {
       field: "id",
       headerName: "Robots",
-      width: 100,
+      width: 50,
+      flex: 0.6,
       editable: false,
+      sortable: false,
     },
     {
-      field: "",
+      field: "ID",
       headerName: "Location Types",
-      width: 150,
+      width: 50,
+      flex: 1,
       editable: false,
+      sortable: false,
     },
   ];
 
   return (
     <div className="Table">
-      <Box sx={{ height: 400, width: "100%", minWidth: 600 }}>
-        <DataGrid columns={columns} rows={locations} />
+      <Box sx={{ height: 400, width: "100%" }}>
+        <DataGrid
+          columns={columns}
+          rows={locations}
+          checkboxSelection
+          hideFooterPagination
+          hideFooter
+          disableColumnMenu
+        />
       </Box>
     </div>
   );
