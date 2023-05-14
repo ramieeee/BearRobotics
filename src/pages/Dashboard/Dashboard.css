@@ -2,10 +2,10 @@
   font-weight: 600;
   font-size: 24px;
   margin-bottom: 24px;
-  background: lightblue;
 }
 
 .search_filter_container {
+  height: 100px;
   margin-bottom: 16px;
   background: pink;
 }

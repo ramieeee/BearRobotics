@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Location } from "mocks/db";
+import Table from "components/Table";
 import "./Dashboard.css";
 
 export default function Dashboard(): JSX.Element {
-  const [locations, setLocations] = useState<Location[]>();
+  const [locations, setLocations] = useState<Location[]>([]);
 
   const getLocation = async () =>
     await fetch("/locations")
@@ -20,10 +21,11 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <div className="Dashboard">
-      <button onClick={() => console.log(locations)}>test</button>
       <div className="header">Your Fleet</div>
       <div className="search_filter_container"></div>
-      <div className="table_container"></div>
+      <div className="table_container">
+        <Table locations={locations} />
+      </div>
     </div>
   );
 }
