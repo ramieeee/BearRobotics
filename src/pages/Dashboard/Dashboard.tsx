@@ -2,14 +2,23 @@ import { useEffect, useState } from "react";
 import { Location } from "mocks/db";
 import Table from "components/Table";
 import "./Dashboard.css";
+import Robot from "interface/Robot";
 
 export default function Dashboard(): JSX.Element {
-  const [locations, setLocations] = useState<Location[]>([]);
+  const [locations, setLocations] = useState<Robot[]>([]);
 
   const getLocation = async () =>
     await fetch("/locations")
       .then(async (data) => {
         const locationData = await data.json();
+        locationData.map((data: Location) => {
+          return {
+            id: data.id,
+            name: data.name,
+            robot_id: data.robot.id,
+            is_online: data.robot.is_online,
+          };
+        });
         setLocations(locationData);
       })
       .catch((e) => {

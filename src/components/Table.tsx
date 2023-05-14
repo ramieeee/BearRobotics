@@ -1,9 +1,10 @@
 import { Location } from "mocks/db";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import Robot from "interface/Robot";
 
 interface ITableProps {
-  locations: Location[];
+  locations: Robot[];
 }
 
 export default function Table({ locations }: ITableProps) {
@@ -18,7 +19,7 @@ export default function Table({ locations }: ITableProps) {
       sortable: false,
     },
     {
-      field: "id",
+      field: "robot_id",
       headerName: "Robots",
       width: 50,
       flex: 0.6,
@@ -26,7 +27,7 @@ export default function Table({ locations }: ITableProps) {
       sortable: false,
     },
     {
-      field: "ID",
+      field: "is_online",
       headerName: "Location Types",
       width: 50,
       flex: 1,
