@@ -4,15 +4,15 @@ import Box from "@mui/material/Box";
 import Robot from "interface/Robot";
 
 interface ITableProps {
-  locations: Robot[];
+  robots: Robot[];
 }
 
-export default function Table({ locations }: ITableProps) {
+export default function Table({ robots }: ITableProps) {
   const columns = [
     { field: "star", headerName: "star", width: 60, sortable: false },
     {
       field: "name",
-      headerName: "Locations",
+      headerName: "robots",
       width: 50,
       flex: 1,
       editable: false,
@@ -41,7 +41,7 @@ export default function Table({ locations }: ITableProps) {
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
           columns={columns}
-          rows={locations}
+          rows={robots}
           checkboxSelection
           hideFooterPagination
           hideFooter
