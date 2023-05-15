@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Location } from "mocks/db";
-import Table from "components/Table";
-import "./Dashboard.css";
 import Robot from "interface/Robot";
+import "./Dashboard.css";
+
+// components
+import Table from "components/Table/Table";
+import SelectBox from "components/SelectBox/SelectBox";
 
 export default function Dashboard(): JSX.Element {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -40,8 +43,10 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <div className="Dashboard">
-      <div className="header">Your Fleet</div>
-      <div className="search_filter_container"></div>
+      <div className="title">Your Fleet</div>
+      <div className="header">
+        <SelectBox />
+      </div>
       <div className="table_container">
         <Table robots={robots} />
       </div>
