@@ -1,0 +1,5 @@
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-root .MuiDataGrid-cell:focus,
+.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox {
+  outline: none !important;
+}

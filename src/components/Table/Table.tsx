@@ -1,6 +1,8 @@
 import { Location } from "mocks/db";
 import Robot from "interface/Robot";
 
+import "./Table.css";
+
 // components
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
@@ -84,6 +86,14 @@ export default function Table({ robots }: ITableProps) {
           hideFooter
           disableColumnMenu
           disableRowSelectionOnClick
+          sx={{
+            "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+              outline: "none !important",
+            },
+            // "&.MuiDataGrid-columnHeader MuiDataGrid-withBorderColor": {
+            //   outline: "none !important",
+            // },
+          }}
         />
       </Box>
     </div>
