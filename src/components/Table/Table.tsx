@@ -8,73 +8,66 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { CheckBox } from "@mui/icons-material";
+import CellLocation from "components/CellLocation/CellLocation";
 
 interface ITableProps {
   robots: Robot[];
 }
 
+const columns = [
+  {
+    field: "star",
+    renderHeader: () => {
+      return (
+        <div style={{ cursor: "pointer", display: "flex", color: "#656565" }}>
+          <RefreshIcon />
+        </div>
+      );
+    },
+    width: 60,
+    sortable: false,
+    renderCell: () => {
+      return (
+        <div style={{ cursor: "pointer", display: "flex", color: "#8E8E8E" }}>
+          <StarBorderIcon />
+        </div>
+      );
+    },
+  },
+  {
+    field: "name",
+    headerName: "Locations",
+    width: 50,
+    renderCell: (params: any) => {
+      console.log(params.row.name);
+      return (
+        <>
+          <CellLocation />
+        </>
+      );
+    },
+    flex: 1,
+    editable: false,
+    sortable: false,
+  },
+  {
+    field: "robot_id",
+    headerName: "Robots",
+    width: 50,
+    flex: 0.6,
+    editable: false,
+    sortable: false,
+  },
+  {
+    field: "is_online",
+    headerName: "Location Types",
+    width: 50,
+    flex: 1,
+    editable: false,
+    sortable: false,
+  },
+];
 export default function Table({ robots }: ITableProps) {
-  const columns = [
-    // {
-    //   field: "checkbox",
-    //   renderHeader: () => {
-    //     return (
-    //       <div>
-    //         <CheckBox />
-    //       </div>
-    //     );
-    //   },
-    //   width: 50,
-    //   flex: 1,
-    //   editable: false,
-    //   sortable: false,
-    // },
-    {
-      field: "star",
-      renderHeader: () => {
-        return (
-          <div style={{ cursor: "pointer", display: "flex", color: "#656565" }}>
-            <RefreshIcon />
-          </div>
-        );
-      },
-      width: 60,
-      sortable: false,
-      renderCell: () => {
-        return (
-          <div style={{ cursor: "pointer", display: "flex", color: "#8E8E8E" }}>
-            <StarBorderIcon />
-          </div>
-        );
-      },
-    },
-    {
-      field: "name",
-      headerName: "robots",
-      width: 50,
-      flex: 1,
-      editable: false,
-      sortable: false,
-    },
-    {
-      field: "robot_id",
-      headerName: "Robots",
-      width: 50,
-      flex: 0.6,
-      editable: false,
-      sortable: false,
-    },
-    {
-      field: "is_online",
-      headerName: "Location Types",
-      width: 50,
-      flex: 1,
-      editable: false,
-      sortable: false,
-    },
-  ];
-
   return (
     <div className="Table">
       <Box sx={{ height: 400, width: "100%" }}>
