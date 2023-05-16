@@ -1,7 +1,12 @@
 import { Location } from "mocks/db";
+import Robot from "interface/Robot";
+
+// components
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import Robot from "interface/Robot";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { CheckBox } from "@mui/icons-material";
 
 interface ITableProps {
   robots: Robot[];
@@ -9,7 +14,39 @@ interface ITableProps {
 
 export default function Table({ robots }: ITableProps) {
   const columns = [
-    { field: "star", headerName: "star", width: 60, sortable: false },
+    // {
+    //   field: "checkbox",
+    //   renderHeader: () => {
+    //     return (
+    //       <div>
+    //         <CheckBox />
+    //       </div>
+    //     );
+    //   },
+    //   width: 50,
+    //   flex: 1,
+    //   editable: false,
+    //   sortable: false,
+    // },
+    {
+      field: "star",
+      renderHeader: () => {
+        return (
+          <div style={{ cursor: "pointer", display: "flex", color: "#656565" }}>
+            <RefreshIcon />
+          </div>
+        );
+      },
+      width: 60,
+      sortable: false,
+      renderCell: () => {
+        return (
+          <div style={{ cursor: "pointer", display: "flex", color: "#8E8E8E" }}>
+            <StarBorderIcon />
+          </div>
+        );
+      },
+    },
     {
       field: "name",
       headerName: "robots",
@@ -46,6 +83,7 @@ export default function Table({ robots }: ITableProps) {
           hideFooterPagination
           hideFooter
           disableColumnMenu
+          disableRowSelectionOnClick
         />
       </Box>
     </div>

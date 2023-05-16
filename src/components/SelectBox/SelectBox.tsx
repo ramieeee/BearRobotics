@@ -14,15 +14,19 @@ export default function SelectBox() {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+      <FormControl
+        sx={{ m: 1, minWidth: 120, width: 220, height: 40 }}
+        size="small"
+      >
         <Select
           value={selected}
           onChange={handleChange}
           displayEmpty
+          defaultValue={"allLocations"}
           inputProps={{ "aria-label": "Without label" }}
           sx={{ color: "#8E8E8E", background: "#FAFAFA" }}
         >
-          <MenuItem value={"allLocations"}>All locations</MenuItem>
+          <MenuItem value={""}>All locations</MenuItem>
           <MenuItem value={"starred"}>Starred</MenuItem>
         </Select>
       </FormControl>

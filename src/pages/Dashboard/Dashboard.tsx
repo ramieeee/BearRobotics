@@ -6,10 +6,12 @@ import "./Dashboard.css";
 // components
 import Table from "components/Table/Table";
 import SelectBox from "components/SelectBox/SelectBox";
+import SearchBox from "components/SearchBox/SearchBox";
 
 export default function Dashboard(): JSX.Element {
   const [locations, setLocations] = useState<Location[]>([]);
   const [robots, setRobots] = useState<Robot[]>([]);
+  const [searchText, setSearchText] = useState<String>("");
 
   const getLocation = async () =>
     await fetch("/locations")
@@ -46,6 +48,7 @@ export default function Dashboard(): JSX.Element {
       <div className="title">Your Fleet</div>
       <div className="header">
         <SelectBox />
+        <SearchBox />
       </div>
       <div className="table_container">
         <Table robots={robots} />

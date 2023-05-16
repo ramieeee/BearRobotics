@@ -20,6 +20,7 @@ export const handlers = [
     "/locations",
     (req, res, ctx) => {
       // Please implement filtering feature here
+      // query params: page, location_name, robot_id, is_starred
       const result: LocationsResult = {
         total_count: locations?.length,
         locations: locations,
