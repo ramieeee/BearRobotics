@@ -6,9 +6,11 @@ import "./Table.css";
 // components
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
+import CellLocation from "components/CellLocation/CellLocation";
+
+// icons
 import RefreshIcon from "@mui/icons-material/Refresh";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import CellLocation from "components/CellLocation/CellLocation";
 
 interface ITableProps {
   robots: Robot[];
@@ -39,10 +41,16 @@ const columns = [
     headerName: "Locations",
     width: 50,
     renderCell: (params: any) => {
-      console.log(params.row.name);
+      const isOnline: boolean = params.row.is_online;
+      const name: string = params.row.name;
+
       return (
         <>
-          <CellLocation />
+          {isOnline && name ? (
+            <CellLocation name={name} online={true} />
+          ) : (
+            <CellLocation name={name} online={false} />
+          )}
         </>
       );
     },
@@ -79,14 +87,7 @@ export default function Table({ robots }: ITableProps) {
           hideFooter
           disableColumnMenu
           disableRowSelectionOnClick
-          sx={{
-            "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-              outline: "none !important",
-            },
-            // "&.MuiDataGrid-columnHeader MuiDataGrid-withBorderColor": {
-            //   outline: "none !important",
-            // },
-          }}
+          rowHeight={64}
         />
       </Box>
     </div>
