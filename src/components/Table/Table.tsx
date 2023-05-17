@@ -87,6 +87,7 @@ const columns = [
   },
 ];
 export default function Table({ robots, dataCnt }: ITableProps) {
+  const [page, setPage] = useState<number>(1);
   const [pageCnt, setPageCnt] = useState<number>(1);
 
   useEffect(() => {
@@ -116,7 +117,7 @@ export default function Table({ robots, dataCnt }: ITableProps) {
       <div className="table-pagination-container">
         <Pagination
           count={pageCnt}
-          onChange={() => console.log("pagination")}
+          onChange={(e, page: number) => console.log(page)}
         />
       </div>
     </div>

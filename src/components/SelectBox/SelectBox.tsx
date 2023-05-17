@@ -1,15 +1,20 @@
-import { useState } from "react";
 // import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 // import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-export default function SelectBox() {
-  const [selected, setSelected] = useState("");
+interface ISelectBoxProps {
+  selectedItem: string;
+  setSelectedItem: Function;
+}
 
+export default function SelectBox({
+  selectedItem,
+  setSelectedItem,
+}: ISelectBoxProps) {
   const handleChange = (event: SelectChangeEvent) => {
-    setSelected(event.target.value);
+    setSelectedItem(event.target.value);
   };
 
   return (
@@ -19,7 +24,7 @@ export default function SelectBox() {
         size="small"
       >
         <Select
-          value={selected}
+          value={selectedItem}
           onChange={handleChange}
           displayEmpty
           defaultValue={"allLocations"}
