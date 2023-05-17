@@ -12,12 +12,14 @@ export default function Dashboard(): JSX.Element {
   const [locations, setLocations] = useState<Location[]>([]);
   const [robots, setRobots] = useState<Robot[]>([]);
   const [searchText, setSearchText] = useState<String>("");
+  const [dataCnt, setDataCnt] = useState<number>(0);
 
   const getLocation = async () =>
     await fetch("/locations")
       .then(async (data) => {
         const locationData = await data.json();
         setLocations(locationData?.locations);
+        setDataCnt(locationData?.total_count);
       })
       .catch((e) => {
         alert("Error getting locations. Please try again");
@@ -51,7 +53,7 @@ export default function Dashboard(): JSX.Element {
         <SearchBox />
       </div>
       <div className="table_container">
-        <Table robots={robots} />
+        <Table robots={robots} dataCnt={dataCnt} />
       </div>
     </div>
   );

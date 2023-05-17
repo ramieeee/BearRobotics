@@ -1,4 +1,4 @@
-import { Location } from "mocks/db";
+import { useState, useEffect } from "react";
 import Robot from "interface/Robot";
 
 import "./Table.css";
@@ -8,6 +8,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import CellLocation from "components/CellLocation/CellLocation";
 import CellRobot from "components/CellRobot/CellRobot";
+import Pagination from "@mui/material/Pagination";
 
 // icons
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -15,6 +16,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 interface ITableProps {
   robots: Robot[];
+  dataCnt: number;
 }
 
 const columns = [
@@ -84,10 +86,17 @@ const columns = [
     sortable: false,
   },
 ];
-export default function Table({ robots }: ITableProps) {
+export default function Table({ robots, dataCnt }: ITableProps) {
+  const [pageCnt, setPageCnt] = useState<number>(1);
+
+  useEffect(() => {
+    const pages = Math.ceil(dataCnt / 6);
+    setPageCnt(pages);
+  }, [dataCnt]);
+
   return (
     <div className="Table">
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: "auto", width: "100%" }}>
         <DataGrid
           columns={columns}
           rows={robots}
@@ -97,8 +106,19 @@ export default function Table({ robots }: ITableProps) {
           disableColumnMenu
           disableRowSelectionOnClick
           rowHeight={64}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 6, page: 0 },
+            },
+          }}
         />
       </Box>
+      <div className="table-pagination-container">
+        <Pagination
+          count={pageCnt}
+          onChange={() => console.log("pagination")}
+        />
+      </div>
     </div>
   );
 }

@@ -4,3 +4,11 @@
 .MuiDataGrid-root .MuiDataGrid-cellCheckbox {
   outline: none !important;
 }
+
+.table-pagination-container {
+  width: 100%;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
