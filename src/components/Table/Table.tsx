@@ -7,6 +7,7 @@ import "./Table.css";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import CellLocation from "components/CellLocation/CellLocation";
+import CellRobot from "components/CellRobot/CellRobot";
 
 // icons
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -44,13 +45,11 @@ const columns = [
       const isOnline: boolean = params.row.is_online;
       const name: string = params.row.name;
 
+      const online: boolean = isOnline && name ? true : false;
+
       return (
         <>
-          {isOnline && name ? (
-            <CellLocation name={name} online={true} />
-          ) : (
-            <CellLocation name={name} online={false} />
-          )}
+          <CellLocation name={name} online={online} />
         </>
       );
     },
@@ -62,6 +61,16 @@ const columns = [
     field: "robot_id",
     headerName: "Robots",
     width: 50,
+    renderCell: (params: any) => {
+      const isOnline: boolean = params.row.is_online;
+      const robotId: string = params.row.robot_id;
+
+      return (
+        <>
+          <CellRobot robotId={robotId} online={isOnline} />
+        </>
+      );
+    },
     flex: 0.6,
     editable: false,
     sortable: false,

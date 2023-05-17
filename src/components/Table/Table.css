@@ -1,5 +1,6 @@
 .MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
 .MuiDataGrid-root .MuiDataGrid-cell:focus,
-.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox {
+.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox,
+.MuiDataGrid-root .MuiDataGrid-cellCheckbox {
   outline: none !important;
 }

@@ -1,0 +1,19 @@
+.cellRobot-container {
+  display: flex;
+  align-items: center;
+}
+
+.cellRobot-container-robotId {
+  margin-left: 16px;
+  font-size: 16px;
+}
+
+.cellrobot-add {
+  color: #3a5fff;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.cellrobot-add:hover {
+  cursor: pointer;
+}
