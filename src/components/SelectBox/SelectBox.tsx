@@ -4,6 +4,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
+import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
+import "./SelectBox.css";
+
 interface ISelectBoxProps {
   selectedItem: string;
   setSelectedItem: Function;
@@ -27,12 +30,15 @@ export default function SelectBox({
           value={selectedItem}
           onChange={handleChange}
           displayEmpty
-          defaultValue={"allLocations"}
           inputProps={{ "aria-label": "Without label" }}
           sx={{ color: "#8E8E8E", background: "#FAFAFA" }}
         >
-          <MenuItem value={""}>All locations</MenuItem>
-          <MenuItem value={"starred"}>Starred</MenuItem>
+          <MenuItem value={""} className="select-menu">
+            <div>All locations</div>
+          </MenuItem>
+          <MenuItem value={"starred"} className="select-menu">
+            <div>Starred</div>
+          </MenuItem>
         </Select>
       </FormControl>
     </div>

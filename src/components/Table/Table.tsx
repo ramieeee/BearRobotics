@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Robot from "interface/Robot";
+import { Location } from "mocks/db";
+import { putStarredItems, getStarredItems } from "apis/StarredItems";
 
 import "./Table.css";
 
@@ -12,11 +14,12 @@ import Pagination from "@mui/material/Pagination";
 
 // icons
 import RefreshIcon from "@mui/icons-material/Refresh";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
 
 interface ITableProps {
   robots: Robot[];
   dataCnt: number;
+  setTablePage: Function;
 }
 
 const columns = [
@@ -31,10 +34,13 @@ const columns = [
     },
     width: 60,
     sortable: false,
-    renderCell: () => {
+    renderCell: (params: any) => {
       return (
-        <div style={{ cursor: "pointer", display: "flex", color: "#8E8E8E" }}>
-          <StarBorderIcon />
+        <div
+          style={{ cursor: "pointer", display: "flex", color: "#8E8E8E" }}
+          onClick={() => putStarredItems(params.row)}
+        >
+          <StarBorderRoundedIcon />
         </div>
       );
     },
@@ -86,7 +92,8 @@ const columns = [
     sortable: false,
   },
 ];
-export default function Table({ robots, dataCnt }: ITableProps) {
+
+export default function Table({ robots, dataCnt, setTablePage }: ITableProps) {
   const [page, setPage] = useState<number>(1);
   const [pageCnt, setPageCnt] = useState<number>(1);
 
@@ -117,7 +124,7 @@ export default function Table({ robots, dataCnt }: ITableProps) {
       <div className="table-pagination-container">
         <Pagination
           count={pageCnt}
-          onChange={(e, page: number) => console.log(page)}
+          onChange={(e, page: number) => setTablePage(page)}
         />
       </div>
     </div>

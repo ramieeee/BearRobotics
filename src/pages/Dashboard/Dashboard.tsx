@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Location } from "mocks/db";
 import Robot from "interface/Robot";
 import "./Dashboard.css";
+import { getStarredItems } from "apis/StarredItems";
 
 // components
 import Table from "components/Table/Table";
@@ -16,9 +17,14 @@ export default function Dashboard(): JSX.Element {
   // filter conditions
   const [searchText, setSearchText] = useState<string>("");
   const [selectedItem, setSelectedItem] = useState<string>("");
+  const [tablePage, setTablePage] = useState<number>(1);
 
-  const getLocation = async () =>
-    await fetch("/locations")
+  const getLocation = async (
+    searchText: string,
+    selectedItem: string,
+    tablePage: number
+  ) =>
+    await fetch(`/locations`)
       .then(async (data) => {
         const locationData = await data.json();
         setLocations(locationData?.locations);
@@ -29,8 +35,12 @@ export default function Dashboard(): JSX.Element {
       });
 
   useEffect(() => {
-    getLocation();
+    getLocation(searchText, selectedItem, tablePage);
   }, []);
+
+  // useEffect(() => {
+  //   setTablePage(1);
+  // }, [searchText, selectedItem]);
 
   // change object type
   useEffect(() => {
@@ -50,6 +60,15 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <div className="Dashboard">
+      <button
+        onClick={async () => {
+          const data = await getStarredItems();
+          console.log(data);
+        }}
+      >
+        get Starred
+      </button>
+
       <div className="title">Your Fleet</div>
       <div className="header">
         <SelectBox
@@ -59,7 +78,7 @@ export default function Dashboard(): JSX.Element {
         <SearchBox setSearchText={setSearchText} />
       </div>
       <div className="table_container">
-        <Table robots={robots} dataCnt={dataCnt} />
+        <Table robots={robots} dataCnt={dataCnt} setTablePage={setTablePage} />
       </div>
     </div>
   );
