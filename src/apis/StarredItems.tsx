@@ -1,12 +1,12 @@
 import Robot from "interface/Robot";
 
 export const putStarredItems = async (starredItem: Robot) => {
-  console.log(starredItem);
   const data = await fetch(`/starred_location_ids`, {
     method: "PUT",
     body: JSON.stringify(starredItem),
+    headers: { "Content-type": "application:json" },
   })
-    .then((res) => {
+    .then(async (res) => {
       if (res.status === 204) {
         console.log("Successfully starred");
       } else {
@@ -22,7 +22,7 @@ export const putStarredItems = async (starredItem: Robot) => {
 };
 
 export const getStarredItems = async () => {
-  const _data = await fetch(`/starred_location_ids`);
-  const data = await _data.json();
-  return data;
+  const _items = await fetch(`/starred_location_ids`);
+  const items = await _items.json();
+  return items;
 };

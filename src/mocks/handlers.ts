@@ -1,5 +1,6 @@
 import { DefaultBodyType, rest } from "msw";
-
+import Robot from "interface/Robot";
+import { getStarredItems } from "apis/StarredItems";
 import { Location } from "./db";
 import { locations } from "./db";
 
@@ -51,7 +52,25 @@ export const handlers = [
       );
     }
 
-    sessionStorage.setItem("starred_location_ids", JSON.stringify(req.body));
+    const item = req.body as Robot;
+    getStarredItems().then((items) => {
+      const starredList = items.location_ids;
+
+      const isExist = starredList.includes(item.id);
+      if (isExist) {
+        const excludedList = starredList.filter((id: number) => id !== item.id);
+        sessionStorage.setItem(
+          "starred_location_ids",
+          JSON.stringify(excludedList)
+        );
+      } else {
+        starredList.push(item.id);
+        sessionStorage.setItem(
+          "starred_location_ids",
+          JSON.stringify(starredList)
+        );
+      }
+    });
 
     return res(ctx.status(204));
   }),
