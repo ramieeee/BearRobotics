@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Location } from "mocks/db";
 import Robot from "interface/Robot";
 import "./Dashboard.css";
-import { getStarredItems } from "apis/StarredItems";
+import { getStarredItems, putStarredItems } from "apis/StarredItems";
 
 // components
 import Table from "components/Table/Table";
@@ -18,11 +18,12 @@ export default function Dashboard(): JSX.Element {
   const [searchText, setSearchText] = useState<string>("");
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [tablePage, setTablePage] = useState<number>(1);
+  const [starredItems, setStarredItems] = useState<number[]>([]);
 
   const getLocation = async (
-    searchText: string,
-    selectedItem: string,
-    tablePage: number
+    searchText?: string,
+    selectedItem?: string,
+    tablePage?: number
   ) =>
     await fetch(`/locations`)
       .then(async (data) => {
@@ -36,11 +37,14 @@ export default function Dashboard(): JSX.Element {
 
   useEffect(() => {
     getLocation(searchText, selectedItem, tablePage);
+    getStarredItems().then((items) => setStarredItems(items.location_ids));
   }, []);
 
-  // useEffect(() => {
-  //   setTablePage(1);
-  // }, [searchText, selectedItem]);
+  const onStarClick = (id: Robot) => {
+    putStarredItems(id).then(() => {
+      getStarredItems().then((items) => setStarredItems(items.location_ids));
+    });
+  };
 
   // change object type
   useEffect(() => {
@@ -62,8 +66,8 @@ export default function Dashboard(): JSX.Element {
     <div className="Dashboard">
       <button
         onClick={async () => {
-          const data = await getStarredItems();
-          console.log(data);
+          const list = await getStarredItems();
+          console.log(list);
         }}
       >
         get Starred
@@ -78,7 +82,14 @@ export default function Dashboard(): JSX.Element {
         <SearchBox setSearchText={setSearchText} />
       </div>
       <div className="table_container">
-        <Table robots={robots} dataCnt={dataCnt} setTablePage={setTablePage} />
+        <Table
+          robots={robots}
+          dataCnt={dataCnt}
+          starredItems={starredItems}
+          setTablePage={setTablePage}
+          getLocation={getLocation}
+          onStarClick={onStarClick}
+        />
       </div>
     </div>
   );

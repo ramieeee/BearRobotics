@@ -14,10 +14,7 @@ export const putStarredItems = async (starredItem: Robot) => {
       }
     })
     .then((res) => {
-      // do nothing
-    })
-    .catch((e) => {
-      alert("Error star marking. Please try again");
+      return res;
     });
 };
 
