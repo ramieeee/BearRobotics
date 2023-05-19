@@ -64,15 +64,6 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <div className="Dashboard">
-      <button
-        onClick={async () => {
-          const list = await getStarredItems();
-          console.log(list);
-        }}
-      >
-        get Starred
-      </button>
-
       <div className="title">Your Fleet</div>
       <div className="header">
         <SelectBox
