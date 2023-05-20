@@ -23,6 +23,13 @@ export default function Dashboard(): JSX.Element {
   const [tablePage, setTablePage] = useState<number>(1);
   const [starredItems, setStarredItems] = useState<number[]>([]);
 
+  const clearAll = () => {
+    setSearchText("");
+    if (timeoutToggle) clearTimeout(timeoutToggle);
+    setSelectedItem("");
+    setTablePage(1);
+  };
+
   const getLocation = async (
     searchText?: string,
     selectedItem?: string,
@@ -89,13 +96,15 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <div className="Dashboard">
-      <div className="title">Your Fleet</div>
+      <div className="title" onClick={clearAll}>
+        Your Fleet
+      </div>
       <div className="header">
         <SelectBox
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}
         />
-        <SearchBox setSearchText={setSearchText} />
+        <SearchBox setSearchText={setSearchText} searchText={searchText} />
       </div>
       <div className="table_container">
         <Table
