@@ -22,7 +22,6 @@ interface ITableProps {
   dataCnt: number;
   starredItems: number[];
   setTablePage: Function;
-  getLocation: Function;
   onStarClick: Function;
 }
 
@@ -31,7 +30,6 @@ export default function Table({
   dataCnt,
   starredItems,
   setTablePage,
-  getLocation,
   onStarClick,
 }: ITableProps) {
   const [page, setPage] = useState<number>(1);
@@ -115,7 +113,7 @@ export default function Table({
   ];
 
   useEffect(() => {
-    const pages = Math.ceil(dataCnt / 6);
+    const pages = dataCnt === 0 ? 1 : Math.ceil(dataCnt / 6);
     setPageCnt(pages);
   }, [dataCnt]);
 

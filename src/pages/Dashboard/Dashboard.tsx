@@ -25,7 +25,9 @@ export default function Dashboard(): JSX.Element {
     selectedItem?: string,
     tablePage?: number
   ) =>
-    await fetch(`/locations`)
+    await fetch(
+      `/locations?searchText=${searchText}&page=${tablePage}&selectedItem=${selectedItem}`
+    )
       .then(async (data) => {
         const locationData = await data.json();
         setLocations(locationData?.locations);
@@ -40,11 +42,14 @@ export default function Dashboard(): JSX.Element {
     getStarredItems().then((items) => setStarredItems(items.location_ids));
   }, []);
 
-  const onStarClick = (id: Robot) => {
-    putStarredItems(id).then(() => {
-      getStarredItems().then((items) => setStarredItems(items.location_ids));
-    });
-  };
+  // when search condition changes
+  useEffect(() => {
+    getLocation(searchText, selectedItem, tablePage);
+  }, [selectedItem, tablePage]);
+
+  useEffect(() => {
+    getLocation(searchText, selectedItem, tablePage);
+  }, [searchText]);
 
   // change object type
   useEffect(() => {
@@ -59,8 +64,16 @@ export default function Dashboard(): JSX.Element {
         });
       });
       setRobots(_robots);
+    } else {
+      setRobots([]);
     }
   }, [locations]);
+
+  const onStarClick = (id: Robot) => {
+    putStarredItems(id).then(() => {
+      getStarredItems().then((items) => setStarredItems(items.location_ids));
+    });
+  };
 
   return (
     <div className="Dashboard">
@@ -78,7 +91,6 @@ export default function Dashboard(): JSX.Element {
           dataCnt={dataCnt}
           starredItems={starredItems}
           setTablePage={setTablePage}
-          getLocation={getLocation}
           onStarClick={onStarClick}
         />
       </div>

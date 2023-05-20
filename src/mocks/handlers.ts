@@ -21,9 +21,36 @@ export const handlers = [
     (req, res, ctx) => {
       // Please implement filtering feature here
       // query params: page, location_name, robot_id, is_starred
+      const params = req.url;
+      const selectedItem = params.searchParams.get("selectedItem");
+      const searchText = params.searchParams.get("searchText");
+      const page = params.searchParams.get("page") as string;
+
+      const starredItems = JSON.parse(
+        sessionStorage.getItem("starred_location_ids") || "[]"
+      );
+
+      // 1. check if starred
+      let itemList = locations;
+      if (selectedItem === "starred") {
+        itemList = itemList?.filter((item) => starredItems.includes(item.id));
+      } else if (searchText !== "") {
+        console.log(searchText);
+      }
+
+      // 2. check if any text
+      // itemList = itemList?.filter((item) => console.log(item));
+
+      // 3. check page
+
+      // page calculation
+      const startRange = (parseInt(page) - 1) * 6;
+      const endRange = parseInt(page) * 6;
+      // locations?.slice(startRange, endRange)
+
       const result: LocationsResult = {
-        total_count: locations?.length,
-        locations: locations,
+        total_count: itemList?.length,
+        locations: itemList,
       };
 
       return res(ctx.status(200), ctx.json(result));
