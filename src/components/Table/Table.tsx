@@ -106,6 +106,9 @@ export default function Table({
     {
       field: "is_online",
       headerName: "Location Types",
+      renderCell: (params: any) => {
+        return <span>Serving</span>;
+      },
       width: 50,
       flex: 1,
       editable: false,

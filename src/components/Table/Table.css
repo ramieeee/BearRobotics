@@ -11,6 +11,21 @@
   outline: none !important;
 }
 
+/* column separator */
+.MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator {
+  visibility: visible !important;
+}
+.MuiDataGrid-columnHeader:last-child .MuiDataGrid-columnSeparator,
+.MuiDataGrid-columnHeader:first-child .MuiDataGrid-columnSeparator {
+  visibility: hidden !important;
+}
+
+/* pagination */
+.Mui-selected {
+  background-color: #3961f8 !important;
+  color: #ffffff !important;
+}
+
 .table-pagination-container {
   width: 100%;
   margin-top: 24px;
