@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./SelectBox.css";
 import SearchBox from "components/SearchBox/SearchBox";
 
@@ -19,6 +19,7 @@ export default function SelectBox({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
+  const selectBoxRef = useRef<HTMLDivElement>(null);
 
   const defaultOptions = [
     {
@@ -67,10 +68,28 @@ export default function SelectBox({
     } else {
       setSelectedItem("starred");
     }
+    handleOpen();
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        selectBoxRef.current &&
+        !selectBoxRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="SelectBox">
+    <div className="SelectBox" ref={selectBoxRef}>
       <div className="selectbox" onClick={handleOpen}>
         <div
           className="selectbox-item"
@@ -135,47 +154,7 @@ export default function SelectBox({
             </div>
           );
         })}
-
-        {/* <div
-          className={isOpen ? "options" : "options-close"}
-          id="starred"
-          style={{
-            backgroundColor:
-              isSelected === "starred" ? "rgba(184, 221, 255, 0.2)" : "#fafafa",
-          }}
-          onClick={onOptionClick}
-        >
-          <div className="option-text">Starred</div>
-          {isSelected === "starred" ? (
-            <DoneRoundedIcon
-              sx={{ width: 15, height: 15 }}
-              className="check-icon"
-            />
-          ) : null}
-        </div> */}
       </div>
     </div>
-
-    // <div className="SearchBox">
-    //   <FormControl
-    //     sx={{ m: 1, minWidth: 120, width: 220, height: 40 }}
-    //     size="small"
-    //   >
-    //     <Select
-    //       value={selectedItem}
-    //       onChange={handleChange}
-    //       displayEmpty
-    //       inputProps={{ "aria-label": "Without label" }}
-    //       sx={{ color: "#8E8E8E", background: "#FAFAFA" }}
-    //     >
-    //       <MenuItem value={""} className="select-menu">
-    //         <div>All locations</div>
-    //       </MenuItem>
-    //       <MenuItem value={"starred"} className="select-menu">
-    //         <div>Starred</div>
-    //       </MenuItem>
-    //     </Select>
-    //   </FormControl>
-    // </div>
   );
 }
