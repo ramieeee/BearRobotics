@@ -19,7 +19,7 @@ export default function Dashboard(): JSX.Element {
   const [timeoutToggle, setTimeoutToggle] = useState<NodeJS.Timeout | null>(
     null
   );
-  const [selectedItem, setSelectedItem] = useState<string>("");
+  const [selectedItem, setSelectedItem] = useState<string>("All locations");
   const [tablePage, setTablePage] = useState<number>(1);
   const [starredItems, setStarredItems] = useState<number[]>([]);
 
@@ -104,7 +104,11 @@ export default function Dashboard(): JSX.Element {
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}
         />
-        <SearchBox setSearchText={setSearchText} searchText={searchText} />
+        <SearchBox
+          setSearchText={setSearchText}
+          searchText={searchText}
+          placeHolder={"Search robot or location"}
+        />
       </div>
       <div className="table_container">
         <Table

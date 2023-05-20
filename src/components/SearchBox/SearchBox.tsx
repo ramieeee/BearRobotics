@@ -5,11 +5,13 @@ import SearchIcon from "@mui/icons-material/Search";
 interface ISearchBoxProps {
   setSearchText: Function;
   searchText: string;
+  placeHolder: string;
 }
 
 export default function SearchBox({
   setSearchText,
   searchText,
+  placeHolder,
 }: ISearchBoxProps) {
   const handleTextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -19,7 +21,7 @@ export default function SearchBox({
     <div className="searchbox">
       <input
         className="searchbox-input"
-        placeholder="Search robot or location"
+        placeholder={placeHolder}
         value={searchText}
         onChange={handleTextInput}
       />

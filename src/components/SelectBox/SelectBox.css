@@ -1,5 +1,75 @@
-.select-menu {
+.SelectBox {
   position: relative;
+}
+
+.selectbox {
   display: flex;
-  flex-direction: row;
+  position: relative;
+  align-items: center;
+  cursor: pointer;
+  width: 220px;
+  height: 40px;
+  padding: 10px 0 10px 12px;
+  background: #fafafa;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+}
+
+.selectbox svg {
+  width: 30px;
+  height: 30px;
+}
+
+.selectbox-item {
+  color: #8e8e8e;
+  font-size: 14px;
+}
+
+.search-input {
+  height: 32px;
+}
+
+.option-container {
+  position: absolute;
+  width: 100%;
+  /* height: 64px; */
+  top: 44px;
+  background-color: #8e8e8e;
+  z-index: 10;
+  background: #fafafa;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  padding-bottom: 5px;
+}
+
+.options {
+  display: flex;
+  position: relative;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  height: 32px;
+  font-size: 14px;
+}
+
+.options:hover {
+  background-color: rgba(184, 221, 255, 0.2) !important;
+  /* background: #b8ddff !important; */
+}
+
+.option-container-close,
+.search-input-close,
+.options-close {
+  opacity: 0;
+  height: 0;
+}
+
+.check-icon {
+  position: absolute;
+  right: 0;
+  margin-right: 16px;
+  color: #133bd3;
+}
+.check-icon:hover {
+  background: transparent;
 }
