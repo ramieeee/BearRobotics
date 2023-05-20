@@ -1,15 +1,11 @@
-// import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-// import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { ChangeEventHandler, useEffect, useState } from "react";
+import "./SelectBox.css";
+import SearchBox from "components/SearchBox/SearchBox";
 
-import { useEffect, useState } from "react";
-
+// icons
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
-import "./SelectBox.css";
 
 interface ISelectBoxProps {
   selectedItem: string;
@@ -22,16 +18,55 @@ export default function SelectBox({
 }: ISelectBoxProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>("");
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedItem(event.target.value);
-  };
+  const defaultOptions = [
+    {
+      id: "allLocation",
+      text: "All locations",
+    },
+    {
+      id: "starred",
+      text: "Starred",
+    },
+  ];
+  const [options, setOptions] = useState<Ioption[]>(defaultOptions);
+  const [timeoutToggle, setTimeoutToggle] = useState<NodeJS.Timeout | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (timeoutToggle) {
+      clearTimeout(timeoutToggle);
+    }
+    const timer = setTimeout(() => {
+      const filteredOption = defaultOptions.filter((option: Ioption) => {
+        const optionText = option.text.toLowerCase();
+        return optionText.includes(searchText.toLowerCase());
+      });
+      setOptions(filteredOption);
+    }, 500);
+
+    setTimeoutToggle(timer);
+  }, [searchText]);
+
+  interface Ioption {
+    id: string;
+    text: string;
+  }
+
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
 
   const onOptionClick = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsSelected(e.currentTarget.id);
+
+    if (e.currentTarget.id === "allLocation") {
+      setSelectedItem("allLocations");
+    } else {
+      setSelectedItem("starred");
+    }
   };
 
   return (
@@ -41,7 +76,7 @@ export default function SelectBox({
           className="selectbox-item"
           style={{ color: isOpen ? "#222222" : "#8E8E8E" }}
         >
-          {selectedItem}
+          {selectedItem === "allLocations" ? "All locations" : "Starred"}
         </div>
         {isOpen ? (
           <ArrowDropUpRoundedIcon
@@ -63,30 +98,45 @@ export default function SelectBox({
       </div>
       <div className={isOpen ? "option-container" : "option-container-close"}>
         <div className={isOpen ? "search-input" : "search-input-close"}>
-          search
+          <SearchBox
+            setSearchText={setSearchText}
+            searchText={searchText}
+            placeHolder={"Search Group"}
+            width={"204px"}
+            height={"32px"}
+            backgroundColor={"#EEEEEE"}
+            inputBackgroundColor={"#EEEEEE"}
+            searchIconColor={"#8E8E8E"}
+            placeholderPadding={"6px 8px 6px 8px"}
+          />
         </div>
 
-        <div
-          className={isOpen ? "options" : "options-close"}
-          id="allLocation"
-          style={{
-            backgroundColor:
-              isSelected === "allLocation"
-                ? "rgba(184, 221, 255, 0.2)"
-                : "#fafafa",
-          }}
-          onClick={onOptionClick}
-        >
-          All locations
-          {isSelected === "allLocation" ? (
-            <DoneRoundedIcon
-              sx={{ width: 15, height: 15 }}
-              className="check-icon"
-            />
-          ) : null}
-        </div>
+        {options.map((option: Ioption) => {
+          return (
+            <div
+              key={option.id}
+              className={isOpen ? "options" : "options-close"}
+              id={option.id}
+              style={{
+                backgroundColor:
+                  isSelected === option.id
+                    ? "rgba(184, 221, 255, 0.2)"
+                    : "#fafafa",
+              }}
+              onClick={onOptionClick}
+            >
+              <div className="option-text">{option.text}</div>
+              {isSelected === option.id ? (
+                <DoneRoundedIcon
+                  sx={{ width: 15, height: 15 }}
+                  className="check-icon"
+                />
+              ) : null}
+            </div>
+          );
+        })}
 
-        <div
+        {/* <div
           className={isOpen ? "options" : "options-close"}
           id="starred"
           style={{
@@ -95,14 +145,14 @@ export default function SelectBox({
           }}
           onClick={onOptionClick}
         >
-          Starred
+          <div className="option-text">Starred</div>
           {isSelected === "starred" ? (
             <DoneRoundedIcon
               sx={{ width: 15, height: 15 }}
               className="check-icon"
             />
           ) : null}
-        </div>
+        </div> */}
       </div>
     </div>
 

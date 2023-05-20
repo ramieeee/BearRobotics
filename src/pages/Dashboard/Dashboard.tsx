@@ -19,14 +19,14 @@ export default function Dashboard(): JSX.Element {
   const [timeoutToggle, setTimeoutToggle] = useState<NodeJS.Timeout | null>(
     null
   );
-  const [selectedItem, setSelectedItem] = useState<string>("All locations");
+  const [selectedItem, setSelectedItem] = useState<string>("allLocations");
   const [tablePage, setTablePage] = useState<number>(1);
   const [starredItems, setStarredItems] = useState<number[]>([]);
 
   const clearAll = () => {
     setSearchText("");
     if (timeoutToggle) clearTimeout(timeoutToggle);
-    setSelectedItem("");
+    setSelectedItem("allLocations");
     setTablePage(1);
   };
 
@@ -56,7 +56,15 @@ export default function Dashboard(): JSX.Element {
   // when search condition changes
   useEffect(() => {
     getLocation(searchText, selectedItem, tablePage);
-  }, [selectedItem, tablePage]);
+  }, [tablePage]);
+
+  useEffect(() => {
+    if (tablePage !== 1) {
+      setTablePage(1);
+    } else {
+      getLocation(searchText, selectedItem, tablePage);
+    }
+  }, [selectedItem]);
 
   // when text search condition changes
   useEffect(() => {
@@ -64,7 +72,11 @@ export default function Dashboard(): JSX.Element {
       clearTimeout(timeoutToggle);
     }
     const timer = setTimeout(() => {
-      getLocation(searchText, selectedItem, tablePage);
+      if (tablePage !== 1) {
+        setTablePage(1);
+      } else {
+        getLocation(searchText, selectedItem, tablePage);
+      }
     }, 500);
 
     setTimeoutToggle(timer);
@@ -108,6 +120,12 @@ export default function Dashboard(): JSX.Element {
           setSearchText={setSearchText}
           searchText={searchText}
           placeHolder={"Search robot or location"}
+          width={"240px"}
+          height={"40px"}
+          backgroundColor={"#fafafa"}
+          inputBackgroundColor={"#fafafa"}
+          searchIconColor={"#000000"}
+          placeholderPadding={"10px 8px 10px 16px"}
         />
       </div>
       <div className="table_container">
@@ -117,6 +135,7 @@ export default function Dashboard(): JSX.Element {
           starredItems={starredItems}
           setTablePage={setTablePage}
           onStarClick={onStarClick}
+          tablePage={tablePage}
         />
       </div>
     </div>

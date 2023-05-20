@@ -38,11 +38,11 @@ export const handlers = [
 
       // 2. check if any text
       const listWithTextFilter = itemList.filter((item) => {
-        const locationName = item.name.toLocaleLowerCase();
-        const robotName = item.robot.id.toLocaleLowerCase();
+        const locationName = item.name.toLowerCase();
+        const robotName = item.robot.id.toLowerCase();
         return (
-          locationName.includes(searchText.toLocaleLowerCase()) ||
-          robotName.includes(searchText.toLocaleLowerCase())
+          locationName.includes(searchText.toLowerCase()) ||
+          robotName.includes(searchText.toLowerCase())
         );
       });
 

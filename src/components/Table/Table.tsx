@@ -23,6 +23,7 @@ interface ITableProps {
   starredItems: number[];
   setTablePage: Function;
   onStarClick: Function;
+  tablePage: number;
 }
 
 export default function Table({
@@ -31,8 +32,8 @@ export default function Table({
   starredItems,
   setTablePage,
   onStarClick,
+  tablePage,
 }: ITableProps) {
-  const [page, setPage] = useState<number>(1);
   const [pageCnt, setPageCnt] = useState<number>(1);
 
   const columns = [
@@ -140,6 +141,7 @@ export default function Table({
         <Pagination
           count={pageCnt}
           onChange={(e, page: number) => setTablePage(page)}
+          page={tablePage}
         />
       </div>
     </div>
