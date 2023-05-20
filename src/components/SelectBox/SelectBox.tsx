@@ -144,7 +144,9 @@ export default function SelectBox({
               }}
               onClick={onOptionClick}
             >
-              <div className="option-text">{option.text}</div>
+              <div className={isOpen ? "option-text" : "option-text-close"}>
+                {option.text}
+              </div>
               {isSelected === option.id ? (
                 <DoneRoundedIcon
                   sx={{ width: 15, height: 15 }}

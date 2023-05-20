@@ -67,6 +67,7 @@
 
 .option-container-close,
 .search-input-close,
+.option-text-close,
 .options-close {
   opacity: 0;
   height: 0;
