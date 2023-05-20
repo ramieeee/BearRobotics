@@ -16,6 +16,9 @@ export default function Dashboard(): JSX.Element {
 
   // filter conditions
   const [searchText, setSearchText] = useState<string>("");
+  const [timeoutToggle, setTimeoutToggle] = useState<NodeJS.Timeout | null>(
+    null
+  );
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [tablePage, setTablePage] = useState<number>(1);
   const [starredItems, setStarredItems] = useState<number[]>([]);
@@ -37,6 +40,7 @@ export default function Dashboard(): JSX.Element {
         alert("Error getting locations. Please try again");
       });
 
+  // on first render
   useEffect(() => {
     getLocation(searchText, selectedItem, tablePage);
     getStarredItems().then((items) => setStarredItems(items.location_ids));
@@ -47,8 +51,16 @@ export default function Dashboard(): JSX.Element {
     getLocation(searchText, selectedItem, tablePage);
   }, [selectedItem, tablePage]);
 
+  // when text search condition changes
   useEffect(() => {
-    getLocation(searchText, selectedItem, tablePage);
+    if (timeoutToggle) {
+      clearTimeout(timeoutToggle);
+    }
+    const timer = setTimeout(() => {
+      getLocation(searchText, selectedItem, tablePage);
+    }, 500);
+
+    setTimeoutToggle(timer);
   }, [searchText]);
 
   // change object type
