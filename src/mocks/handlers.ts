@@ -23,7 +23,7 @@ export const handlers = [
       // query params: page, location_name, robot_id, is_starred
       const params = req.url;
       const selectedItem = params.searchParams.get("selectedItem");
-      const searchText = params.searchParams.get("searchText");
+      const searchText = params.searchParams.get("searchText") as string;
       const page = params.searchParams.get("page") as string;
 
       const starredItems = JSON.parse(
@@ -31,26 +31,33 @@ export const handlers = [
       );
 
       // 1. check if starred
-      let itemList = locations;
+      let itemList: Location[] = locations;
       if (selectedItem === "starred") {
         itemList = itemList?.filter((item) => starredItems.includes(item.id));
-      } else if (searchText !== "") {
-        console.log(searchText);
       }
 
       // 2. check if any text
-      // itemList = itemList?.filter((item) => console.log(item));
+      const listWithTextFilter = itemList.filter((item) => {
+        const locationName = item.name.toLocaleLowerCase();
+        const robotName = item.robot.id.toLocaleLowerCase();
+        return (
+          locationName.includes(searchText.toLocaleLowerCase()) ||
+          robotName.includes(searchText.toLocaleLowerCase())
+        );
+      });
 
       // 3. check page
-
       // page calculation
       const startRange = (parseInt(page) - 1) * 6;
       const endRange = parseInt(page) * 6;
-      // locations?.slice(startRange, endRange)
+
+      const filteredList = listWithTextFilter[endRange]
+        ? listWithTextFilter?.slice(startRange, endRange)
+        : listWithTextFilter?.slice(startRange);
 
       const result: LocationsResult = {
-        total_count: itemList?.length,
-        locations: itemList,
+        total_count: listWithTextFilter?.length,
+        locations: filteredList,
       };
 
       return res(ctx.status(200), ctx.json(result));
