@@ -40,6 +40,7 @@ export default function Table({
   const [pageCnt, setPageCnt] = useState<number>(1);
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [indeterminate, setIndeterminate] = useState<boolean>(false);
+  const [checked, setChecked] = useState<boolean>(false);
 
   const handleColumnRowSelect = () => {
     if (selectedRowIds.length > 0) {
@@ -61,8 +62,18 @@ export default function Table({
     }
   };
 
+  const handleChecked = () => {
+    const filtered = allLocations.filter((id) => selectedRowIds.includes(id));
+    if (filtered.length === allLocations.length) {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  };
+
   useEffect(() => {
     handleindeterminate();
+    handleChecked();
   }, [selectedRowIds, allLocations]);
 
   const handleRowSelect = (id: number) => {
@@ -83,7 +94,7 @@ export default function Table({
             <Checkbox
               indeterminate={indeterminate}
               onClick={handleColumnRowSelect}
-              checked={selectedRowIds.length >= allLocations.length}
+              checked={checked}
             />
           </div>
         );
