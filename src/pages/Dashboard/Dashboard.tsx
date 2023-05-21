@@ -10,6 +10,7 @@ import SelectBox from "components/SelectBox/SelectBox";
 import SearchBox from "components/SearchBox/SearchBox";
 
 export default function Dashboard(): JSX.Element {
+  const [allLocations, setAllLocations] = useState<number[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
   const [robots, setRobots] = useState<Robot[]>([]);
   const [dataCnt, setDataCnt] = useState<number>(0);
@@ -28,6 +29,27 @@ export default function Dashboard(): JSX.Element {
     if (timeoutToggle) clearTimeout(timeoutToggle);
     setSelectedItem("allLocations");
     setTablePage(1);
+  };
+
+  const getAllLocations = async () => {
+    await fetch(
+      `/locations?searchText=${searchText}&page=${0}&selectedItem=${selectedItem}`
+    )
+      .then(async (data) => {
+        const allLocationData = await data.json();
+        console.log(allLocationData);
+
+        let allIds: number[] = [];
+        allLocationData.locations.forEach((row: Location) => {
+          allIds.push(row.id);
+        });
+        // setSelectedRowIds(allIds);
+
+        setAllLocations(allIds);
+      })
+      .catch(() => {
+        alert("Error getting all locations. Please try again");
+      });
   };
 
   const getLocation = async (
@@ -49,16 +71,19 @@ export default function Dashboard(): JSX.Element {
 
   // on first render
   useEffect(() => {
+    getAllLocations();
     getLocation(searchText, selectedItem, tablePage);
     getStarredItems().then((items) => setStarredItems(items.location_ids));
   }, []);
 
   // when search condition changes
   useEffect(() => {
+    getAllLocations();
     getLocation(searchText, selectedItem, tablePage);
   }, [tablePage]);
 
   useEffect(() => {
+    getAllLocations();
     if (tablePage !== 1) {
       setTablePage(1);
     } else {
@@ -75,10 +100,10 @@ export default function Dashboard(): JSX.Element {
       if (tablePage !== 1) {
         setTablePage(1);
       } else {
+        getAllLocations();
         getLocation(searchText, selectedItem, tablePage);
       }
     }, 500);
-
     setTimeoutToggle(timer);
   }, [searchText]);
 
@@ -136,6 +161,7 @@ export default function Dashboard(): JSX.Element {
           setTablePage={setTablePage}
           onStarClick={onStarClick}
           tablePage={tablePage}
+          allLocations={allLocations}
         />
       </div>
     </div>

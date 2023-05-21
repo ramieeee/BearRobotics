@@ -17,7 +17,10 @@ export default function CellRobot({ robotId, online }: Status) {
           <div className="cellRobot-container-robotId">{robotId}</div>
         </div>
       ) : (
-        <div className="cellrobot-add">Add</div>
+        <div className="cellRobot-container">
+          <CircleIcon sx={{ color: "#E4E4E4", width: 16, height: 16 }} />
+          <div className="cellrobot-add">Add</div>
+        </div>
       )}
     </div>
   );

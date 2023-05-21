@@ -22,6 +22,7 @@ export const handlers = [
       // Please implement filtering feature here
       // query params: page, location_name, robot_id, is_starred
       const params = req.url;
+
       const selectedItem = params.searchParams.get("selectedItem");
       const searchText = params.searchParams.get("searchText") as string;
       const page = params.searchParams.get("page") as string;
@@ -39,12 +40,24 @@ export const handlers = [
       // 2. check if any text
       const listWithTextFilter = itemList.filter((item) => {
         const locationName = item.name.toLowerCase();
-        const robotName = item.robot.id.toLowerCase();
+        const robotName = item.robot.is_online
+          ? item.robot.id.toLowerCase()
+          : "";
+
         return (
           locationName.includes(searchText.toLowerCase()) ||
           robotName.includes(searchText.toLowerCase())
         );
       });
+
+      if (page === "0") {
+        const result: LocationsResult = {
+          total_count: listWithTextFilter?.length,
+          locations: listWithTextFilter,
+        };
+
+        return res(ctx.status(200), ctx.json(result));
+      }
 
       // 3. check page
       // page calculation

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Robot from "interface/Robot";
-// import { Location } from "mocks/db";
+import { Location } from "mocks/db";
 // import { putStarredItems, getStarredItems } from "apis/StarredItems";
 
 import "./Table.css";
 
 // components
 import { DataGrid } from "@mui/x-data-grid";
+import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 import CellLocation from "components/CellLocation/CellLocation";
 import CellRobot from "components/CellRobot/CellRobot";
@@ -24,6 +25,7 @@ interface ITableProps {
   setTablePage: Function;
   onStarClick: Function;
   tablePage: number;
+  allLocations: number[];
 }
 
 export default function Table({
@@ -33,10 +35,73 @@ export default function Table({
   setTablePage,
   onStarClick,
   tablePage,
+  allLocations,
 }: ITableProps) {
   const [pageCnt, setPageCnt] = useState<number>(1);
+  const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const [indeterminate, setIndeterminate] = useState<boolean>(false);
+
+  const handleColumnRowSelect = () => {
+    if (selectedRowIds.length > 0) {
+      const matchingIds = selectedRowIds.filter((id) =>
+        allLocations.includes(id)
+      );
+      const filtered = selectedRowIds.filter((id) => !matchingIds.includes(id));
+      setSelectedRowIds(filtered);
+    } else {
+      setSelectedRowIds(allLocations);
+    }
+  };
+  const handleindeterminate = () => {
+    const filtered = allLocations.filter((id) => selectedRowIds.includes(id));
+    if (filtered.length > 0 && filtered.length < allLocations.length) {
+      setIndeterminate(true);
+    } else {
+      setIndeterminate(false);
+    }
+  };
+
+  useEffect(() => {
+    handleindeterminate();
+  }, [selectedRowIds, allLocations]);
+
+  const handleRowSelect = (id: number) => {
+    if (selectedRowIds.includes(id)) {
+      const filtered = selectedRowIds.filter((row) => row !== id);
+      setSelectedRowIds(filtered);
+    } else {
+      setSelectedRowIds((prev) => [...prev, id]);
+    }
+  };
 
   const columns = [
+    {
+      field: "checkbox",
+      renderHeader: () => {
+        return (
+          <div>
+            <Checkbox
+              indeterminate={indeterminate}
+              onClick={handleColumnRowSelect}
+              checked={selectedRowIds.length >= allLocations.length}
+            />
+          </div>
+        );
+      },
+      width: 60,
+      sortable: false,
+      renderCell: (params: any) => {
+        return (
+          <div>
+            <Checkbox
+              onChange={() => handleRowSelect(params.row.id)}
+              checked={selectedRowIds.includes(params.row.id)}
+            />
+          </div>
+        );
+      },
+    },
+
     {
       field: "star",
       renderHeader: () => {
@@ -127,7 +192,7 @@ export default function Table({
         <DataGrid
           columns={columns}
           rows={robots}
-          checkboxSelection
+          // checkboxSelection
           hideFooterPagination
           hideFooter
           disableColumnMenu

@@ -7,7 +7,9 @@
 .MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
 .MuiDataGrid-root .MuiDataGrid-cell:focus,
 .MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox,
-.MuiDataGrid-root .MuiDataGrid-cellCheckbox {
+.MuiDataGrid-root .MuiDataGrid-cellCheckbox,
+.MuiDataGrid-cell,
+.MuiDataGrid-withBorderColor {
   outline: none !important;
 }
 
@@ -21,7 +23,7 @@
 }
 
 /* pagination */
-.Mui-selected {
+.table-pagination-container .Mui-selected {
   background-color: #3961f8 !important;
   color: #ffffff !important;
 }
